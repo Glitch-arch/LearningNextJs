@@ -9,7 +9,9 @@ export default async function getUserPosts(userId:any) {
     {
         next: {revalidate:60}
     }  )
-    if(!res) throw new Error("Failed to fetch")
+
+    // Changed to undifined beacuse using notfound() in pages
+    if(!res) return undefined
     const data = await res.json()
     return data
 

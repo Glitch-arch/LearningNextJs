@@ -3,6 +3,8 @@ import getAllUsers from "../../../../lib/getAllUsers"
 import { Suspense } from "react"
 import getUserPosts from "../../../../lib/getUserPosts"
 
+import { notFound } from "next/navigation"
+
 type Params = {
     params:{
         userId:string
@@ -26,11 +28,14 @@ export default async function userPage({params:{userId}}:Params) {
   // Here didnt use await because we want to fetch both api parrallel 
   const userData:any =  getUser(userId)
   const userPosts:any =  getUserPosts(userId)
-  
 
   // used await so that we can render the data after the promise is resolved
   const [user ,userPost] = await Promise.all([userData,userPosts])
   
+  // notFound() does not require you to use return notFound() due to using the TypeScript never type.
+  if(!user.name) notFound()
+
+
   return (
     <div className="text-white">
 
