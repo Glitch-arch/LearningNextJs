@@ -3,13 +3,16 @@ import type { Metadata } from 'next'
 import getAllUsers from '../../../lib/getAllUsers'
 import Link from 'next/link'
 
+// Static meta data
 export const metadata: Metadata = {
     title: 'Users',
 }
 
 
 export default async function UsersPage() {
-    const userData:Promise<user[]> = getAllUsers("https://jsonplaceholder.typicode.com/posts")
+    
+    // promise that will be resolved into an array of user
+    const userData:Promise<any[]> = getAllUsers("https://jsonplaceholder.typicode.com/users")
     const users = await userData  
     console.log(users)
 
@@ -22,9 +25,9 @@ export default async function UsersPage() {
             {
                 users.map((user)=>{
                     return(
+                        // Key is important for reconcilliation 
                         <div key={user.id}>
-                            <h3>{user.title}</h3>
-                            <p>{user.body}</p>
+                            <Link href={`/users/${user.id}`} >{user.name}</Link>
                         </div>
                     )
                 })

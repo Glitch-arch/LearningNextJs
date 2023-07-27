@@ -1,6 +1,7 @@
 import getUser from "../../../../lib/getUser"
 import getAllUsers from "../../../../lib/getAllUsers"
 import { Suspense } from "react"
+import getUserPosts from "../../../../lib/getUserPosts"
 
 type Params = {
     params:{
@@ -9,22 +10,27 @@ type Params = {
 }
 
 export default async function userPage({params:{userId}}:Params) {
-  const userData:Promise<user> = getAllUsers(`https://jsonplaceholder.typicode.com/posts`)
-  const userPosts:Promise<user[]> = getUser(`https://jsonplaceholder.typicode.com/posts/${userId}`)
+  
+  // Here didnt use await because we want to fetch both api parrallel 
+  const userData:any =  getUser(userId)
+  const userPosts:any =  getUserPosts(userId)
+  
 
+  // used await so that we can render the data after the promise is resolved
   const [user ,userPost] = await Promise.all([userData,userPosts])
+  
   return (
-    <div>
+    <div className="text-white">
 
-      <h2>{user.title}</h2>
+      <h2>{user.name}</h2>
       <br />
       <Suspense fallback={<h2>Loading</h2>} >
         <div>
           {
-            userPost.map((post)=>{
+            userPost.map((post:any)=>{
               return (<div key = {post.id}>
                 <h3>{post.title}</h3>
-                <p>{post.body}</p>
+                <p>{post.id}</p>
               </div>)
             })
           }
