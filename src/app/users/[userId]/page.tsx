@@ -9,6 +9,18 @@ type Params = {
     }
 }
 
+export async function generateMetadata({params:{userId}}:Params){
+
+  const userData = await getUser(userId)
+  console.log(userData)
+
+  return{
+    title:  userData.name,
+    description: 'This is an dyanamic meta data '
+  }
+
+}
+
 export default async function userPage({params:{userId}}:Params) {
   
   // Here didnt use await because we want to fetch both api parrallel 
