@@ -51,3 +51,15 @@ export default async function userPage({params:{userId}}:Params) {
     </div>
   )
 }
+
+
+// Implemented SSG by providing all possible pramas 
+export async function generateStaticParams(){
+
+  const userData:Promise<any> = getAllUsers("https://jsonplaceholder.typicode.com/users")
+  const users = await userData
+ return users.map((user:any)=>{
+    const UserId = user.id
+ })
+
+}
